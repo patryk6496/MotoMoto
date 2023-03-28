@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from "react-router-dom"
 import volvoImage from '../../src/Assets/volvo.png';
 import serce from '../../src/Assets/serceOgloszenie.svg';
 
