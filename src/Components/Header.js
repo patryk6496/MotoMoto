@@ -8,6 +8,7 @@ import volvoImage from '../../src/Assets/volvo.png';
 import serce from '../../src/Assets/serceOgloszenie.svg';
 
 
+
 const navigation = [
   { name: 'Strona Główna', href: '#' },
   { name: 'Dodaj Ogłoszenie', to: '/AddAnnouncement' },
@@ -18,7 +19,7 @@ export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className='container'>
+    <div className='container mr-auto ml-auto'>
       <header className="absolute inset-x-0 top-0 z-50">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
     <div className="flex lg:flex-1">
@@ -168,6 +169,6 @@ export default function Example() {
 
     </div>
     </div>
-      </div>
+  </div>
   )
 }
