@@ -1,6 +1,5 @@
 import React from 'react';
 import logo2 from '../Assets/Logo.svg'
-import wsteczIcon from '../Assets/wsteczIcon.svg'
 import Zarejestrujicon from '../Assets/zarejestrujIcon.svg'
 import {Link} from "react-router-dom"
 
