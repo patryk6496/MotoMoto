@@ -8,7 +8,6 @@ import CarList from './CarList'
 
 
 const navigation = [
-  { name: 'Strona Główna', href: '#' },
   { name: 'Dodaj Ogłoszenie', to: '/AddAnnouncement' },
   { name: 'Ulubione', to: '/Favorite' },
 ]
@@ -22,7 +21,7 @@ export default function Example() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
     <div className="flex lg:flex-1">
       <a href="/#" className="-m-1.5 p-1.5">
-        <img className="h-8 w-auto" src={logo} alt=""></img>
+        <img className="h-8 w-auto" src={logo} alt="logo"></img>
       </a>
     </div>
           <div className="flex lg:hidden">
@@ -54,10 +53,7 @@ export default function Example() {
               <a href="/#" className="-m-1.5 p-1.5">
                 <span className="sr-only">Your Company</span>
                 <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
-                />
+                  className="h-8 w-auto" src={logo} alt="logo-mobile"/>
               </a>
               <button
                 type="button"
@@ -71,19 +67,13 @@ export default function Example() {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                    >
-                      {item.name}
-                    </a>
+                  {navigation.map((item,index) => (
+                    <a><Link key={index} to={item.to}>{item.name}<br></br></Link></a>
                   ))}
                 </div>
                 <div className="py-6">
-                <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">Zaloguj<span aria-hidden="true"></span></Link>
-    <Link to="/register" classNameName="text-sm font-semibold leading-6 text-gray-900">Zarejestruj<span aria-hidden="true"></span></Link>
+                <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">Zaloguj<span aria-hidden="true"></span><br></br></Link>
+    			<Link to="/register" classNameName="text-sm font-semibold leading-6 text-gray-900">Zarejestruj<span aria-hidden="true"></span></Link>
                 </div>
               </div>
             </div>

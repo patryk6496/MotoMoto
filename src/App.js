@@ -12,7 +12,8 @@ import Header from './Components/Header'
 function App() {
   return (
 
-    <Routes>   
+    <Routes>
+
       <Route path="/" element={<Home/>} />
       <Route path="/register" element={<RegisterForm/>} />
       <Route path="/login" element={<LoginForm/>} />
@@ -21,7 +22,7 @@ function App() {
       <Route path="/Favorite" element={<Favorite/>} />
 	  <Route path="/CarList" element={<CarList/>} />
     </Routes>
-    
+
 
   );
 }

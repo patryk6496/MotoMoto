@@ -20,5 +20,11 @@ header{
    background: radial-gradient(ellipse at top, #139A43, transparent),radial-gradient(ellipse at bottom, #05421b, transparent);
 }
 
+@media (max-width: 800px) {
+	.car-list{
+		
+	}
+}
+
 
 
