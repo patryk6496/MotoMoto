@@ -9,6 +9,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,17 +21,21 @@ export default function Login() {
       });
 
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        toast.success("Zalogowano pomyślnie");
-        navigate("/home");
+		localStorage.setItem('token', response.data.token);
+		localStorage.setItem('loggedInUserEmail', email);
+		setLoggedInUserEmail(email);
+		toast.success("Zalogowano pomyślnie");
+		navigate("/home");
       } else {
         toast.error("Nieprawidłowy login lub hasło");
       }
     } catch (error) {
       console.error("Błąd podczas logowania", error.response);
 
-      if (error.response && error.response.data && error.response.data.error) {
-        toast.error(error.response.data.error);
+      if (error.response && error.response.status === 403) {
+        toast.error("Nieprawidłowy login lub hasło");
+      } else if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
       } else {
         toast.error("Wystąpił błąd podczas logowania");
       }
