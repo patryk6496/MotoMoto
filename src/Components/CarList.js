@@ -20,8 +20,8 @@ export default function Example() {
 
   console.log(data);
 
-  // dane do podmiany jezeli potrzebujesz wiecej
-  const data2 = [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data]
+  // dane do podmiany jeżeli potrzebujesz więcej
+  const data2 = [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data];
   console.log(data2);
 
   // wzorzec danych statycznych
@@ -30,9 +30,22 @@ export default function Example() {
   // price: '25000 PLN',
 
 
+  const [favorites, setFavorites] = useState([]); // Stan przechowujący ulubione samochody
+
+  const handleFavoriteClick = (carId) => {
+    // Sprawdź, czy samochód jest już w ulubionych
+    if (favorites.includes(carId)) {
+      // Jeśli jest, usuń go z ulubionych
+      setFavorites(favorites.filter(id => id !== carId));
+    } else {
+      // Jeśli nie ma, dodaj go do ulubionych
+      setFavorites([...favorites, carId]);
+    }
+  };
+
   return (
     <>
-      <div class="pt-24 pb-24">
+      <div className="pt-24 pb-24">
         {data.map((car, index) => (
           <div key={index} className="flex justify-center mt-4 px-4 sm:px-0">
             <div className="w-full sm:w-11/12 md:w-9/12 h-auto rounded-lg bg-black flex flex-col sm:flex-row justify-between car-list">
@@ -48,12 +61,12 @@ export default function Example() {
                   {car.marka} {car.model} {car.nazwa}
                 </h2>
                 <p className="text-lg sm:text-xl text-center sm:text-left">
-                  {car.przebieg}km,  {car.pojemnosc}cm3, {car.moc}KM {car.paliwo}
+                  {car.przebieg} km, {car.pojemnosc} cm3, {car.moc} KM {car.paliwo}
                 </p>
               </div>
               <div className="text-white w-full sm:w-56 flex justify-center sm:float-right py-2.5">
-                <button className="flex pr-2.5">
-                  <img className="w-7 h-9" src={`${index % 2 === 0 ? serceP : serceW}`} alt="heartIcon" />
+                <button className="flex pr-2.5" onClick={() => handleFavoriteClick(car.id)}>
+                  <img className="w-7 h-9" src={favorites.includes(car.id) ? serceW : serceP} alt="heartIcon" />
                 </button>
                 <p className="text-3xl py-0.5 text-center sm:text-left">
                   {car.cena} PLN
