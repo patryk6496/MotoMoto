@@ -7,7 +7,7 @@ const Home = () => {
   const [loggedInUserEmail, setLoggedInUserEmail] = useState('');
 
   useEffect(() => {
-    const storedEmail = localStorage.getItem('loggedInUserEmail');
+    const storedEmail = sessionStorage.getItem('loggedInUserEmail');
 
     if (storedEmail) {
       setLoggedInUserEmail(storedEmail);
@@ -16,16 +16,21 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('loggedInUserEmail', loggedInUserEmail);
+    sessionStorage.setItem('loggedInUserEmail', loggedInUserEmail);
   }, [loggedInUserEmail]);
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('loggedInUserEmail');
+    setLoggedInUserEmail('');
+  };
 
   return (
     <div>
       <ToastContainer />
-      <Header loggedInUserEmail={loggedInUserEmail} />
+      <Header />
       {/* Pozostała część zawartości strony */}
       {loggedInUserEmail && (
-        <h1>Witaj {loggedInUserEmail}</h1>
+        <button onClick={handleLogout}>Wyloguj</button>
       )}
     </div>
   );

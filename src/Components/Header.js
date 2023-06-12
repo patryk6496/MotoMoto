@@ -7,35 +7,37 @@ import CarList from './CarList';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const navigation = [
   { name: 'Dodaj Ogłoszenie', to: '/AddAnnouncement' },
   { name: 'Ulubione', to: '/Favorite' },
 ];
 
 const Header = () => {
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
-  
-	useEffect(() => {
-	  const token = localStorage.getItem('token');
-	  setIsLoggedIn(!!token);
-	  const storedEmail = localStorage.getItem('loggedInUserEmail');
-	  setLoggedInUserEmail(storedEmail);
-	}, []);
-  
-	const handleLogout = () => {
-	  localStorage.removeItem('token');
-	  localStorage.removeItem('loggedInUserEmail');
-	  setIsLoggedIn(false);
-	  setLoggedInUserEmail("");
-	};
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+    const storedEmail = localStorage.getItem('loggedInUserEmail');
+    setLoggedInUserEmail(storedEmail);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('loggedInUserEmail');
+    setIsLoggedIn(false);
+    setLoggedInUserEmail("");
+  };
 
   const renderAuthLinks = () => {
     if (isLoggedIn) {
       return (
         <>
+          <Link to="/ResetPassword" className="text-sm font-semibold leading-6 text-gray-900 pr-2">
+            Resetuj hasło
+          </Link>
           <button
             onClick={handleLogout}
             className="text-sm font-semibold leading-6 text-gray-900 pr-2"
@@ -61,7 +63,7 @@ const Header = () => {
 
   useEffect(() => {
     if (loggedInUserEmail) {
-      toast(`Witaj ${loggedInUserEmail}`);
+      toast.success(`Witaj ${loggedInUserEmail}`);
     }
   }, [loggedInUserEmail]);
 
@@ -129,7 +131,6 @@ const Header = () => {
           </Dialog.Panel>
         </Dialog>
       </header>
-
       <CarList />
     </div>
   );

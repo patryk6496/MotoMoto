@@ -9,7 +9,6 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [loggedInUserEmail, setLoggedInUserEmail] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,14 +17,16 @@ export default function Login() {
       const response = await axios.post('http://localhost:8080/auth/login', {
         email: email,
         password: password
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}` // Przekazanie tokena w nagłówku
+        }
       });
 
       if (response.data.token) {
-		localStorage.setItem('token', response.data.token);
-		localStorage.setItem('loggedInUserEmail', email);
-		setLoggedInUserEmail(email);
-		toast.success("Zalogowano pomyślnie");
-		navigate("/home");
+        localStorage.setItem('token', response.data.token);
+        toast.success("Zalogowano pomyślnie");
+        navigate("/home");
       } else {
         toast.error("Nieprawidłowy login lub hasło");
       }
@@ -81,13 +82,6 @@ export default function Login() {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="text-sm">
-                <Link to="/forgot-password" className="font-medium text-sky-600 hover:text-sky-500">
-                  Zapomniałeś hasła?
-                </Link>
               </div>
             </div>
             <div>
