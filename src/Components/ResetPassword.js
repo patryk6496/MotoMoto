@@ -21,11 +21,12 @@ const ResetPassword = () => {
       }
 
       const token = localStorage.getItem('token');
-      const response = await axios.post(
+      const response = await axios.put(
         'http://localhost:8080/user/password',
         {
           oldPassword: oldPassword,
           newPassword: newPassword,
+          confirmNewPassword: confirmNewPassword
         },
         {
           headers: {
