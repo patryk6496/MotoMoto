@@ -121,7 +121,7 @@ export default function Example() {
               </div>
               <div className="text-white w-full sm:w-7/12 m-0 py-2.5 flex flex-col justify-center items-center sm:items-start">
                 <h2 className="text-2xl sm:text-3xl text-center sm:text-left">
-                  id:{car.id} {car.marka} {car.model} {car.nazwa} {car.rok}
+                  {car.marka} {car.model} {car.nazwa} {car.rok}
                 </h2>
                 <p className="text-lg sm:text-xl text-center sm:text-left">
                   {car.przebieg} km, {car.pojemnosc} cm<sup>3</sup>, {car.moc} KM {car.paliwo}
