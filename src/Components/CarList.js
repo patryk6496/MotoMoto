@@ -7,39 +7,102 @@ import serceW from '../../src/Assets/serceWypelnioneOgloszenie.svg';
 
 export default function Example() {
   const [data, setData] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/all')
-      .then(response => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/all');
         setData(response.data);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error fetching car data:', error);
-      });
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/getFavourites', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setFavorites(response.data);
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+      }
+    };
+
+    if (token) {
+      fetchFavorites();
+    }
   }, []);
 
   console.log(data);
 
-  // dane do podmiany jeżeli potrzebujesz więcej
-  const data2 = [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data];
-  console.log(data2);
+  // TODO: fix it still not working
+  const handleFavoriteClick = async (carId) => {
+    if (carId === null) {
+      return; // Exit the function if carId is null
+    }
 
-  // wzorzec danych statycznych
-  // title: 'Volvo XC 90 D5 2019',
-  // description: '98 000 km, 1 969 cm3, 235 KM, Diesel',
-  // price: '25000 PLN',
+    const isFavorite = favorites.includes(carId);
+    const token = localStorage.getItem('token');
 
+    try {
+      if (isFavorite) {
+        // Optimistic update: Remove the car from favorites immediately
+        setFavorites(favorites.filter((id) => id !== carId));
 
-  const [favorites, setFavorites] = useState([]); // Stan przechowujący ulubione samochody
+        // Send request to delete favorite
+        const response = await axios.delete('http://localhost:8080/deleteFavourites',
+          { id: carId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response.status);
+        console.log(response.data);
+        console.log(response.headers);
 
-  const handleFavoriteClick = (carId) => {
-    // Sprawdź, czy samochód jest już w ulubionych
-    if (favorites.includes(carId)) {
-      // Jeśli jest, usuń go z ulubionych
-      setFavorites(favorites.filter(id => id !== carId));
-    } else {
-      // Jeśli nie ma, dodaj go do ulubionych
-      setFavorites([...favorites, carId]);
+      } else {
+        // Optimistic update: Add the car to favorites immediately
+        setFavorites([...favorites, carId]);
+
+        // Send request to add favorite
+        const response = await axios.post(
+          'http://localhost:8080/addFavourites',
+          { id: carId },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(response.status);
+        console.log(response.data);
+        console.log(response.headers);
+      }
+
+      // Refresh the component data after updating favorites
+      const response = await axios.get('http://localhost:8080/all');
+      setData(response.data);
+    } catch (error) {
+      console.error('Error updating favorites:', error);
+
+      // Revert the optimistic update in case of an error
+      if (isFavorite) {
+        setFavorites([...favorites, carId]);
+      } else {
+        setFavorites(favorites.filter((id) => id !== carId));
+      }
     }
   };
 
@@ -58,10 +121,10 @@ export default function Example() {
               </div>
               <div className="text-white w-full sm:w-7/12 m-0 py-2.5 flex flex-col justify-center items-center sm:items-start">
                 <h2 className="text-2xl sm:text-3xl text-center sm:text-left">
-                  {car.marka} {car.model} {car.nazwa}
+                  {car.marka} {car.model} {car.nazwa} {car.rok}
                 </h2>
                 <p className="text-lg sm:text-xl text-center sm:text-left">
-                  {car.przebieg} km, {car.pojemnosc} cm3, {car.moc} KM {car.paliwo}
+                  {car.przebieg} km, {car.pojemnosc} cm<sup>3</sup>, {car.moc} KM {car.paliwo}
                 </p>
               </div>
               <div className="text-white w-full sm:w-56 flex justify-center sm:float-right py-2.5">

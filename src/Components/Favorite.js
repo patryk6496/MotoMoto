@@ -8,7 +8,12 @@ export default function Example() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/all') //place holder az nie bd endpointu
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:8080/getFavourites', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
       .then(response => {
         setData(response.data);
       })
@@ -32,14 +37,14 @@ export default function Example() {
   return (
     <>
       <div className="flex flex-wrap justify-center pt-5 h-full">
-        {data.map((car, index) => (
+        {data2.map((car, index) => (
           <div key={index} className="w-11/12 sm:w-1/2 md:w-1/4 h-96 rounded-lg bg-black flex flex-col justify-center items-center mx-2.5 my-2.5">
             <div className="w-11/12 md:w-full px-2 md:px-0 text-white m-1 md:m-2.5 overflow-hidden">
               <img className="w-full h-32 object-contain object-center" src={volvoImage} alt='carImage' />
             </div>
             <div className="text-white w-11/12 md:w-full m-0 py-1 md:py-2.5 px-2.5 flex flex-col justify-center items-center">
               <h2 className='text-2xl text-center'>{car.marka} {car.model} {car.nazwa}</h2>
-              <p className='text-lg text-center'>{car.przebieg}km,  {car.pojemnosc}cm3, {car.moc}KM {car.paliwo}</p>
+              <p className='text-lg text-center'>{car.przebieg}km,  {car.pojemnosc}cm<sup>3</sup>, {car.moc}KM {car.paliwo}</p>
             </div>
             <div className="text-white w-11/12 md:w-70 flex py-1 md:py-2.5 justify-center">
               <button className='flex pr-2.5'>
